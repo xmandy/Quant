@@ -13,6 +13,10 @@ def main():
     # 下载数据
     data = yf.download(ticker, start=start_date, end=end_date)
 
+    # 如果是多级索引列（例如 ('Close', 'AAPL')），则扁平化
+    if isinstance(data.columns, pd.MultiIndex):
+        data.columns = data.columns.get_level_values(0)
+
     print(data)
 
     if not data.empty:
