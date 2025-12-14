@@ -16,6 +16,14 @@ def main():
     try:
         # 读取 CSV，将第一列作为索引并解析为日期
         df = pd.read_csv(file_path, index_col=0, parse_dates=True)
+
+        # --- 数据清洗开始 ---
+        # 强制将 Close 列转换为数值类型，无法转换的（如 "Apple"）会变成 NaN
+        df['Close'] = pd.to_numeric(df['Close'], errors='coerce')
+        
+        # 删除包含 NaN 的行（清洗掉非法数据）
+        df.dropna(subset=['Close'], inplace=True)
+        # --- 数据清洗结束 ---
         
         # yfinance 下载的数据 CSV 格式可能比较复杂（多级表头），
         # 如果 get_data.py 直接保存了 yf.download 的结果，
@@ -42,8 +50,9 @@ def main():
         print("数据为空。")
         return
 
-    print(df.loc[1])
-    return 
+    print(df.index)
+    return
+
 
     # 计算均线
     print("正在计算均线...")
