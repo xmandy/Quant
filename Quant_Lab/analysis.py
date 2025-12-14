@@ -50,9 +50,6 @@ def main():
         print("数据为空。")
         return
 
-    print(df.index)
-    return
-
 
     # 计算均线
     print("正在计算均线...")
